@@ -1,3 +1,3 @@
 int main() {
-    printf("My weak ass password");
+    printf("My weak ass password"); 
 }
