@@ -65,7 +65,7 @@ void *father(void *args){
 		printf("\n\nFather has woken up for day :\t%d\n\n",day);
 		for(i =0; i < 12 ; i++)
 				{
-					sem_wait(&fath); //Father is waiting to be woken up
+					sem_wait(&fa); //Father is waiting to be woken up
 					printf("Father reads the child #%d a book\n",i+1);
 					usleep(100);
 				}
