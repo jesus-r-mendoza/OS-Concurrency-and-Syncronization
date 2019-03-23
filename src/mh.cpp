@@ -17,7 +17,7 @@ sem_t fa;
 pthread_attr_t attr;
 
 
-void init()
+void init()  // start the semaphores 
 {
 	sem_init(&mo,0,1);
 	sem_init(&fa,0,0);
@@ -26,7 +26,7 @@ void init()
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 }
 
-void *mother (void *args){
+void *mother (void *args){   //Mother conducts the task on her 12 childs ,when completed wakes Father up and Mother goes to sleep.
 	int i;
 
 	while(beg<=days)
@@ -34,23 +34,23 @@ void *mother (void *args){
 	   printf("\n\n This is day :\t%d  of a day in the life of Mother Hubbard \n",beg);
 		for(i =0; i < 12 ; i++)
 					{
-						printf(" Mother wakes the child #%d up\n",i+1);
+						printf("child #%d is woken up by Mother\n",i+1);
 					}
 				for(i =0; i < 12 ; i++)
 				{
-					printf("Mother gives breakfast to child #%d \n",i+1);
+					printf("child #%d is being fed breakfast by mother \n",i+1);
 				}
 				for(i =0; i < 12 ; i++)
 					{
-						printf("Mother sends the child #%d to school\n",i+1);
+						printf("child #%d is sent to school by Mother \n",i+1);
 					}
 				for(i =0; i < 12 ; i++)
 					{
-						printf("Mother  gives dinner to child #%d\n",i+1);
+						printf("child #%d is given dinner by Mother\n",i+1);
 					}
 				for(i =0; i < 12 ; i++)
 					{
-					printf("Mother gives bath to child #%d\n",i+1);
+					printf("child #%d is given a bath by Mother\n",i+1);
 					usleep(100);
 					sem_post(&fa);//Mother wakes the father up
 					}
@@ -58,7 +58,7 @@ void *mother (void *args){
 	}
 }
 
-void *father(void *args){
+void *father(void *args){    //Father wakes up and complete 12 childs tasks, then wake up mother  
 	int i;
 
 	while(day<=days){
@@ -66,17 +66,17 @@ void *father(void *args){
 		for(i =0; i < 12 ; i++)
 				{
 					sem_wait(&fa); //Father is waiting to be woken up
-					printf("Father reads the child #%d a book\n",i+1);
+					printf("child #%d is being read a book by father \n",i+1);
 					usleep(100);
 				}
 
 				for(i =0; i < 12 ; i++)
 					{
 
-						printf("Father makes the child #%d sleep\n",i+1);
+						printf("child #%d goes to sleep by the father\n",i+1);
 					}
 
-				printf("\n\nFather wakes the Mother and goes to sleep\n");
+				printf("\n\n Father is going to sleep and waking up Mother to take care of children \n");
 		day++;
 		sem_post(&mo);
 	}
@@ -85,19 +85,19 @@ void *father(void *args){
 
 
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) {   //input the number of days the Mother & Father will conduct the tasks. 
 
-	if (argc != 2)//checking for number of arguments
+	if (argc != 2)//checking for the number of arguments
 	{
-		printf("\nHey argument must be 2!!");
-		printf("\nThe correct format is ./mh <# of Days>\n");
+		printf("\n argument must be 2");
+		printf("\n format is ./mh <# of Days>\n");
 
 	} else {
 
-		printf("\nYou have given correct number of Arguments\n");
+		
 		days = atoi(argv[1]);
 		printf("\n Number of Days\t =\t%d\n\n", days);
-
+                        // the threads are created and waited to join 
 		init();
 
 		pthread_t m;
