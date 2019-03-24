@@ -24,15 +24,20 @@ int psgrsChecked = 0;
 int psgrsScreened = 0;
 int psgrsSeated = 0;
 
+vector<int> peopleQueue;
 vector<int> arrivalQueue;
 vector<int> bagCheckedQueue;
 vector<int> screenedQueue;
 
 void* doWaitInLine(void* arg) {
     pthread_mutex_lock(&printLock);
-    int id = psgrsArrived++;
-    arrivalQueue.push_back(id);
-    cout << "Passanger #" << id << " has arrived to the Terminal." << endl;
+    srand(time(0));
+    int size = peopleQueue.size();
+    int index = rand() % size;
+    cout << "Passanger #" << peopleQueue[index] << " has arrived to the Terminal." << endl;
+    arrivalQueue.push_back(peopleQueue[index]);
+    peopleQueue.erase(peopleQueue.begin()+index);
+    psgrsArrived++;
     pthread_mutex_unlock(&printLock);
     sem_post(&readyToCheckBags);
     pthread_exit(0);
@@ -93,6 +98,21 @@ void* doSeatPassengers(void* arg) {
     pthread_exit(0);
 }
 
+void randomArrival() {
+    vector<int> people;
+    for ( int i = 0; i < passangers; i++ )
+        people.push_back(i);
+
+    int size;
+    while ( people.size() > 0 ) {
+        srand(time(0));
+        int size = people.size();
+        int index = rand() % size;
+        peopleQueue.push_back(people[index]);
+        people.erase(people.begin()+index);
+    }
+}
+
 int main(int argc, char* args[]) {
     
     if ( argc != 5 ) {
@@ -115,6 +135,8 @@ int main(int argc, char* args[]) {
     sem_init(&readyForSecurity, 0, 0);
     sem_init(&readyToBeSeated, 0, 0);
     sem_init(&readyForTakeOff, 0, 0);
+
+    randomArrival();
 
     pthread_t fligAttendants[attendants];
     for ( int i = 0; i < attendants; i++ )
