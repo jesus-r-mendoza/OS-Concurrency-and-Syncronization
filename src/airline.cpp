@@ -51,7 +51,7 @@ void* doBagCheck(void* arg) {
         srand(time(0));
         int size = arrivalQueue.size();
         int index = rand() % size;        
-        cout << "Passanger #" << arrivalQueue[index] << " is waiting for baggage." << endl;
+        cout << "Passanger #" << arrivalQueue[index] << " is getting their baggage checked." << endl;
         bagCheckedQueue.push_back(arrivalQueue[index]);
         arrivalQueue.erase(arrivalQueue.begin()+index);
         psgrsChecked++;        
@@ -70,7 +70,7 @@ void* doSecurityScreen(void* arg) {
         srand(time(0));
         int size = bagCheckedQueue.size();
         int index = rand() % size;
-        cout << "Passanger #" << bagCheckedQueue[index] << " is waiting for security." << endl;
+        cout << "Passanger #" << bagCheckedQueue[index] << " is getting screened by security." << endl;
         screenedQueue.push_back(bagCheckedQueue[index]);
         bagCheckedQueue.erase(bagCheckedQueue.begin()+index);
         psgrsScreened++;
@@ -130,10 +130,10 @@ int main(int argc, char* args[]) {
         cerr << "Usage: ./airline <int> <int> <int> <int>\n\n";
         return -1;
     }
-    cout << "\n\nThere are " << passangers << " Passangers," << endl;
-    cout << baggers << " Baggage Checkers," << endl;
-    cout << screeners << " Security Screeners," << endl;
-    cout << "and " << attendants << " Flight Attendants.\n" << endl;
+    cout << "\nThere are: \n" << passangers << " Passangers" << endl;
+    cout << baggers << " Baggage Checkers" << endl;
+    cout << screeners << " Security Screeners" << endl;
+    cout << attendants << " Flight Attendants\n" << endl;
 
     pthread_mutex_init(&printLock, NULL);
     sem_init(&readyToCheckBags, 0, 0);
@@ -161,7 +161,8 @@ int main(int argc, char* args[]) {
 
     sem_wait(&readyForTakeOff);
 
-    cout << "The plane has taken off" << endl;
+    cout << "\nEvery passanger has boarded the plane." << endl;
+    cout << "The plane is now taking off.\n" << endl;
     
     return 0;
 }
