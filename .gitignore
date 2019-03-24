@@ -8,4 +8,9 @@
 !src/
 !src/**
 
+!Prj2/
+!Prj2/**
+
+!Prj2.zip
+
 !Makefile
