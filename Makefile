@@ -1,4 +1,4 @@
 all:
-	g++ -o buff src/buff.cpp -lpthread
-	g++ -o mh src/mh.cpp -lpthread
-	g++ -o airline src/airline.cpp -lpthread
+	g++ -o buff buff.cpp -lpthread
+	g++ -o mh mh.cpp -lpthread
+	g++ -o airline airline.cpp -lpthread
