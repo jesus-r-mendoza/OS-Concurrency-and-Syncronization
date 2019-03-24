@@ -116,15 +116,20 @@ void randomArrival() {
 int main(int argc, char* args[]) {
     
     if ( argc != 5 ) {
-        cerr << "\n** Make Sure you use 4 arguments **\n\n";
+        cerr << "\n** Make sure you use 4 arguments **\n";
+        cerr << "Usage: ./airline <int> <int> <int> <int>\n\n";
         return -1;
     }
-
-    passangers = stoi(args[1]);
-    baggers = stoi(args[2]);
-    screeners = stoi(args[3]);
-    attendants = stoi(args[4]);
-
+    try {
+        passangers = stoi(args[1]);
+        baggers = stoi(args[2]);
+        screeners = stoi(args[3]);
+        attendants = stoi(args[4]);
+    } catch (invalid_argument) {
+        cerr << "\n** Make sure you type in Integer values for each argument **\n";
+        cerr << "Usage: ./airline <int> <int> <int> <int>\n\n";
+        return -1;
+    }
     cout << "\n\nThere are " << passangers << " Passangers," << endl;
     cout << baggers << " Baggage Checkers," << endl;
     cout << screeners << " Security Screeners," << endl;
